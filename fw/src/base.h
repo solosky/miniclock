@@ -3,5 +3,8 @@
 
 #include <arduino.h>
 
+typedef uint8_t byte_t;
+typedef bool bool_t;
+
 
 #endif

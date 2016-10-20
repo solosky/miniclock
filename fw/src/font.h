@@ -1,7 +1,9 @@
 #ifndef FONT_H
 #define FONT_H
 
-#define ERR_GLYPH_NOT_FOUND -1
+#include "base.h"
+
+#define ERR_GLYPH_NOT_FOUND 1
 
 // font defines
 // format: 8bytes = encoding(1byte) + bitmap (7bytes)
@@ -16,9 +18,8 @@ typedef struct _glyph_{
 } glyph_t;
 
 
-
 // 7-seg style font
-extern font_t* font_4x7_led;
+extern font_t font_4x7_led[];
 
 
 ///////////////////////////////////////////////////////////////////////////////
