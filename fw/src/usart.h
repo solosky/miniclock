@@ -3,8 +3,8 @@
 
 #include "base.h"
 
-typedef struct _usart_{
-		uint32_t baud;
+typedef struct _usart_ {
+								uint32_t baud;
 } usart_t;
 
 

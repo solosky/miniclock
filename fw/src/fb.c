@@ -88,7 +88,7 @@ uint8_t fb_draw_char(fb_t* fb, char ch, uint8_t x, uint8_t y, font_t* font){
 
 uint8_t fb_draw_string(fb_t* fb, char* str, uint8_t x, uint8_t y, font_t* font){
         for(char* p=str; *p != 0; p++) {
-                x += fb_draw_char(fb, *p, x, y, font);
+                x = fb_draw_char(fb, *p, x, y, font);
         }
         return x;
 }

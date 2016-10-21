@@ -5,17 +5,17 @@
 
 #define I2C_RX_BUFF_SIZE 32
 
-enum i2c_state{
-  I2C_IDLE, I2C_BUSY
+enum i2c_state {
+        I2C_IDLE, I2C_BUSY
 };
 
 #define ERR_I2C_BUSY 1
 #define ERR_I2C_BUFF_OVER_FLOW 2
 
 
-typedef struct __i2c_{
-  uint8_t state;
-  uint8_t clk_frq;
+typedef struct __i2c_ {
+        uint8_t state;
+        uint8_t clk_frq;
 } i2c_t;
 
 

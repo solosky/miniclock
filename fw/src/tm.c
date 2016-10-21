@@ -64,7 +64,7 @@ void tm_init(tm_t* tm, uint8_t sclk_pin, uint8_t din_pin){
 }
 
 void tm_set_brightless(tm_t* tm, uint8_t level){
-        _tm_cmd(tm, TM_CMD_BRIGHNESS | (level & 0x8));
+        _tm_cmd(tm, TM_CMD_BRIGHNESS | (level & 0x7));
 }
 
 

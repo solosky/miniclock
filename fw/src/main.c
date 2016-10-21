@@ -1,8 +1,10 @@
 #include "fb.h"
 #include "debug.h"
+#include "rtc.h"
 #include "Arduino_FreeRTOS.h"
 
 char s[] = "23:45";
+
 
 void setup(){
 
@@ -11,15 +13,18 @@ void setup(){
   fb_t* fb = fb_default();
   fb_init(fb);
 
-  fb_draw_char(fb, '2', 0, 0, font_4x7_led);
-  fb_draw_char(fb, '3', 5, 0, font_4x7_led);
-  fb_draw_char(fb, ':', 10, 0, font_4x7_led);
-  fb_draw_char(fb, '4', 12, 0, font_4x7_led);
-   fb_draw_char(fb, '5', 17, 0, font_4x7_led);
-//  fb_draw_string(fb, s, 0, 0, font_4x7_led);
+  fb_draw_string(fb, s, 0, 0, font_4x7_led);
   fb_flush(fb);
   fb_set_brightness(fb, 7);
-  printf("init done~\n");
+
+  rtc_data_t rtc_data;
+  rtc_t* rtc = rtc_default();
+  rtc_init(rtc);
+  rtc_read(rtc, &rtc_data);
+
+
+
+  //printf("init done~\n");
 
     vTaskStartScheduler();
 }
@@ -36,6 +41,7 @@ void set_col(fb_t* fb, uint8_t col){
 }
 char c = '0';
 uint8_t a= 0;
+char dot = ':';
 void loop(){
     // fb_t* fb = fb_default();
     // fb_clear_display(fb);
@@ -51,4 +57,26 @@ void loop(){
     // if(c == '9'){
     //   c = '0';
     // }
+    rtc_data_t rtc_data;
+    rtc_t* rtc = rtc_default();
+    rtc_read(rtc, &rtc_data);
+
+  //   printf("%.04d-%.02d-%.02d %.02d:%.02d:%.02d\n",
+  //     rtc_data.year,
+  //     rtc_data.month,
+  //     rtc_data.day,
+  //     rtc_data.hour,
+  //     rtc_data.minute,
+  //     rtc_data.second
+  // );
+
+  char time_str[6];
+  sprintf(time_str, "%.02d%c%02d", rtc_data.hour, dot , rtc_data.minute);
+  fb_t* fb = fb_default();
+  fb_clear_display(fb);
+  fb_draw_string(fb, time_str, 0, 0, font_4x7_led);
+  fb_flush(fb);
+  fb_set_brightness(fb, 3);
+  dot = dot ==':' ? ' ': ':';
+  delay(500);
 }

@@ -7,4 +7,5 @@
 #define DBG_USART_BAUD 115200
 
 void debug_init();
+void debug_print_buffer(byte_t* buff, uint8_t size);
 #endif
