@@ -1,5 +1,6 @@
 #include "fb.h"
 #include "debug.h"
+#include "Arduino_FreeRTOS.h"
 
 char s[] = "23:45";
 
@@ -18,8 +19,9 @@ void setup(){
 //  fb_draw_string(fb, s, 0, 0, font_4x7_led);
   fb_flush(fb);
   fb_set_brightness(fb, 7);
+  printf("init done~\n");
 
-
+    vTaskStartScheduler();
 }
 void set_row(fb_t* fb, uint8_t row){
   for(uint8_t i=0; i<22; i++){

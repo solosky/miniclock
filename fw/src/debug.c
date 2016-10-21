@@ -1,13 +1,14 @@
 #include "base.h"
 #include "debug.h"
-#include <stdio.h>
+#include "usart.h"
 
 int serial_putc(char c, struct __file * f) {
-        //Serial.write(c);
+      usart_write(usart_default(), (byte_t) c);
         return c;
 }
 
 
 void debug_init(){
+        usart_init(usart_default(), DBG_USART_BAUD);
         fdevopen(&serial_putc, 0);
 }
