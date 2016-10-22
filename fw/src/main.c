@@ -5,6 +5,7 @@
 #include "Arduino_FreeRTOS.h"
 #include "timers.h"
 #include "dht.h"
+#include "lux.h"
 
 char s[] = "23:45";
 
@@ -34,6 +35,32 @@ void on_key(uint8_t key, uint8_t event){
 
 void scan_key_timer(void* p){
         key_scan(key_default());
+}
+
+void on_lux(uint16_t lux){
+    printf("lux: %d\n",lux);
+    fb_t* fb = fb_default();
+    if(lux < 100){
+      fb_set_brightness(fb, 7);
+    }else if(lux < 150){
+      fb_set_brightness(fb, 6);
+    }else if(lux < 200){
+      fb_set_brightness(fb, 5);
+    }else if(lux < 250){
+      fb_set_brightness(fb, 4);
+  }else if(lux < 300){
+      fb_set_brightness(fb, 3);
+    }else if(lux < 350){
+      fb_set_brightness(fb, 2);
+  }else if(lux < 400){
+      fb_set_brightness(fb, 1);
+  }else{
+      fb_set_brightness(fb, 0);
+  }
+}
+
+void read_lux_timer(void*p){
+    lux_sample(lux_default());
 }
 
 
@@ -91,6 +118,7 @@ void setup(){
         dht_init(dht_default());
 
         key_init(key_default(), on_key);
+        lux_init(lux_default(), on_lux);
 
         TimerHandle_t handle = xTimerCreate("KeyScan", 1, pdTRUE, (void *)0, scan_key_timer);
         xTimerStart( handle, 0 );
@@ -101,6 +129,10 @@ void setup(){
 
         TimerHandle_t handle3 = xTimerCreate("ReadDHT", 1000 / portTICK_PERIOD_MS, pdTRUE, (void *)0, read_dht_timer);
         xTimerStart( handle3, 0 );
+
+        TimerHandle_t handle4 = xTimerCreate("ReadLUX", 150 / portTICK_PERIOD_MS, pdTRUE, (void *)0, read_lux_timer);
+        xTimerStart( handle4, 0 );
+
 
         pinMode(9, OUTPUT);
 
