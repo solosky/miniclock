@@ -1,6 +1,7 @@
 #include "base.h"
 #include "debug.h"
 #include "usart.h"
+#include <Arduino_FreeRTOS.h>
 
 int serial_putc(char c, struct __file * f) {
         usart_write(usart_default(), (byte_t) c);
@@ -25,4 +26,11 @@ void debug_print_buffer(byte_t* buff, uint8_t size) {
                 p++;
         }
         printf("\n");
+}
+
+void vApplicationMallocFailedHook( void ){
+        printf("<mf>\n");
+}
+void vApplicationStackOverflowHook( TaskHandle_t xTask, portCHAR *pcTaskName ){
+        printf("<of>\n");
 }

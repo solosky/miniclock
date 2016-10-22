@@ -18,5 +18,16 @@ typedef uint8_t result_t;
 #define cbi(port, bit) _SFR_BYTE(port) &= ~(_BV(bit))
 #endif
 
+#define zero(mem, size) memset((mem), 0, (size))
+
+//callback defines
+typedef void (*callback_fn_t)(void*);
+typedef struct _callback_ {
+    callback_fn_t cb_fn;
+    void* cb_param;
+} callback_t;
+
+
+
 
 #endif
