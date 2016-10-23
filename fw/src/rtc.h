@@ -40,7 +40,7 @@ typedef struct _rtc_date_time_ {
 // public functions
 ////////////////////////////////////////////////////////////////////////////////
 rtc_t* rtc_default();
-void rtc_init(rtc_t* rtc);
+void rtc_init(rtc_t* rtc, i2c_t* i2c);
 result_t rtc_read(rtc_t* rtc, rtc_date_time_t* rtc_date_time);
 result_t rtc_write(rtc_t* rtc, rtc_date_time_t* rtc_date_time);
 

@@ -9,8 +9,7 @@ i2c_t* i2c_default(){
         return &_i2c0;
 }
 
-void i2c_init(i2c_t* i2c, uint32_t clk_frq){
-        i2c->clk_frq = clk_frq; //TODO ..
+void i2c_init(i2c_t* i2c){
         i2c->state = I2C_IDLE;
 }
 

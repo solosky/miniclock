@@ -9,11 +9,9 @@ int serial_putc(char c, struct __file * f) {
 }
 
 
-void debug_init(){
-        usart_init(usart_default(), DBG_USART_BAUD);
+void debug_init(usart_t* usart){
         fdevopen(&serial_putc, 0);
 }
-
 
 void debug_print_buffer(byte_t* buff, uint8_t size) {
         byte_t *p = buff;

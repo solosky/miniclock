@@ -4,18 +4,13 @@
 
 rtc_t _rtc0;
 
-
-
-
-
 rtc_t* rtc_default(){
-        return &_rtc0;
+  return &_rtc0;
 }
 
-void rtc_init(rtc_t* rtc){
+void rtc_init(rtc_t* rtc, i2c_t* i2c){
         rtc->rtc_addr = RTC_ADDR;
-        rtc->i2c = i2c_default();
-        i2c_init(rtc->i2c, 0);
+        rtc->i2c = i2c;
 
         //1Hz pin enable pull up TODO ..
         pinMode(RTC_INT_PIN, INPUT_PULLUP);

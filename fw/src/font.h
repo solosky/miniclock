@@ -19,7 +19,7 @@ typedef struct _glyph_{
 
 
 // 7-seg style font
-extern font_t font_4x7_led[];
+extern const font_t font_4x7_led[];
 
 
 ///////////////////////////////////////////////////////////////////////////////

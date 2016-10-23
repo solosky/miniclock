@@ -15,7 +15,6 @@ enum i2c_state {
 
 typedef struct __i2c_ {
         uint8_t state;
-        uint8_t clk_frq;
 } i2c_t;
 
 
@@ -23,7 +22,7 @@ typedef struct __i2c_ {
 // public functions
 ///////////////////////////////////////////////////////////////////////
 i2c_t* i2c_default();
-void i2c_init(i2c_t* i2c, uint32_t clk_frq);
+void i2c_init(i2c_t* i2c);
 result_t i2c_write(i2c_t* i2c, uint8_t addr, byte_t data);
 result_t i2c_write_buff(i2c_t* i2c, uint8_t addr, byte_t* buff, uint8_t size);
 result_t i2c_read_buff(i2c_t* i2c, uint8_t addr, byte_t* buff, uint8_t size);

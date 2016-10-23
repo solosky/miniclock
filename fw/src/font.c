@@ -1,7 +1,7 @@
 
 #include "font.h"
 
-font_t font_4x7_led[] = {
+const font_t font_4x7_led[] PROGMEM = {
         ' ', 1, 1, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,
         '0',  4, 7, 0xF0,0x90,0x90,0x90,0x90,0x90,0xF0,
         '1',  4, 7, 0x10,0x10,0x10,0x10,0x10,0x10,0x10,
@@ -15,18 +15,22 @@ font_t font_4x7_led[] = {
         '9',  4, 7, 0xF0,0x90,0x90,0xF0,0x10,0x10,0xF0,
         ':',  1, 7, 0x00,0x00,0x80,0x00,0x80,0x00,0x00,
         '%',  4, 7, 0xC0,0xC0,0x10,0x20,0x40,0xB0,0x30,
-        0xE0, 4, 7, 0x80,0x60,0x90,0x80,0x80,0x90,0x60 // ℃
+        0xE0, 4, 7, 0x80,0x60,0x90,0x80,0x80,0x90,0x60, // ℃
+        0 // here is the end flag.
 };
 
 uint8_t font_get_glyph(font_t* font, char encoding, glyph_t* glyph){
         glyph_t* pos =(glyph_t *) font;
-        glyph_t* end = (glyph_t*) (font + sizeof(font_4x7_led));
-        while(pos != end) {
-                if(pos->ch == encoding) {
-                        memcpy(glyph, pos, sizeof(glyph_t));
+        char ch = 0;
+        do{
+                ch = pgm_read_byte(&pos);
+                if(ch == encoding) {
+                        memcpy_P(glyph, &pos, sizeof(glyph_t));
                         return 0;
+                } else {
+                        pos++;
                 }
-                pos++;
-        }
+        }while(ch != 0);
+
         return ERR_GLYPH_NOT_FOUND;
 }
