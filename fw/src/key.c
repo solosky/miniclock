@@ -57,6 +57,11 @@ void key_scan(key_t* key){
             key->trigger_cycle = 0;
           }
 
+          if(key->pressed_cycle >= KEY_MAX_PRESSED_LONG_CYCLE){
+            _key_trigger_event(key, key->pressed_key, KEY_EVENT_KEYDOWN_LONG);
+            return;
+          }
+
           if(key->trigger_cycle == 0){
             _key_trigger_event(key, key->pressed_key, KEY_EVENT_KEYDOWN);
             return;

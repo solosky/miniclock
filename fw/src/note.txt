@@ -1,0 +1,4 @@
+fuse:
+nano.menu.cpu.atmega328.bootloader.low_fuses=0xFF
+nano.menu.cpu.atmega328.bootloader.high_fuses=0xDA
+nano.menu.cpu.atmega328.bootloader.extended_fuses=0x05

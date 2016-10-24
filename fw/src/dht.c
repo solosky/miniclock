@@ -67,13 +67,25 @@ result_t dht_read(dht_t* dht, dht_data_t* dht_data){
                 }
         }
 
-        uint8_t sum = bits[0] + bits[2];
+        uint8_t sum = bits[0] + bits[1] + bits[2] + bits[3];
         if (bits[4] != sum) {
                 return ERR_CRC_ERR;
         }
 
-        dht_data->humidity    = bits[0];
-        dht_data->temperature = bits[2];
+        //printf("%d,%d,%d,%d,%d\n", bits[0], bits[1], bits[2], bits[3], bits[4]);
+
+        // dht 11
+        if(bits[1] == 0 && bits[3] == 0) {
+                dht_data->humidity = bits[0] * 10;
+                dht_data->temperature = bits[2] * 10;
+        }else{ // dht 22
+
+                dht_data->humidity    = bits[0] << 8;
+                dht_data->humidity   += bits[1];
+                dht_data->temperature = bits[2] << 8;
+                dht_data->temperature += bits[3];
+        }
+
 
         return ERR_OK;
 }
