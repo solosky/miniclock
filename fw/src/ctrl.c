@@ -1,6 +1,5 @@
 #include "ctrl.h"
 #include "debug.h"
-#include "Arduino_FreeRTOS.h"
 #include "timers.h"
 
 ctrl_t _ctrl0;
@@ -22,6 +21,7 @@ void ctrl_init(ctrl_t* ctrl){
     i2c_init(i2c_default());
     rtc_init(rtc_default(), i2c_default());
     dht_init(dht_default());
+    view_init(view_default(), fb_default());
 
     key_init(key_default(), _ctrl_callback_on_key);
     lux_init(lux_default(), _ctrl_callback_on_lux);
@@ -29,18 +29,14 @@ void ctrl_init(ctrl_t* ctrl){
     // create and start timers
     _ctrl_init_timers(ctrl);
 
+    view_show_chain(view_default(), _view_chain_default);
+
 }
 
 void _ctrl_init_timers(ctrl_t* ctrl){
-    _ctrl_new_timer("key_scan", 1, _ctrl_timer_key_scan);
-    _ctrl_new_timer("read_lux", 150 / portTICK_PERIOD_MS,  _ctrl_timer_read_lux);
-    _ctrl_new_timer("read_dht", 1000 / portTICK_PERIOD_MS, _ctrl_timer_read_dht);
-    _ctrl_new_timer("flash_dot",500 / portTICK_PERIOD_MS, _ctrl_timer_flash_dot);
-}
-
-void _ctrl_new_timer(const char* name, uint16_t tick_count, timer_fn_t timer_fn){
-  TimerHandle_t handle = xTimerCreate(name, tick_count, pdTRUE, (void *)0, timer_fn);
-  xTimerStart( handle, 0 );
+    timer_new("key_scan", 1, _ctrl_timer_key_scan, true);
+    timer_new("read_lux", 150 / portTICK_PERIOD_MS,  _ctrl_timer_read_lux, true);
+    timer_new("read_dht", 1000 / portTICK_PERIOD_MS, _ctrl_timer_read_dht, true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +53,7 @@ void _ctrl_timer_flash_dot(void* p){
 }
 
 void _ctrl_timer_read_dht(void* p){
-      result_t ret = dht_read(dht_default(), &(ctrl_default()->dht_data));
+      result_t ret = dht_read(dht_default(), &(ctrl_default()->view_data.dht_data));
       if(ret != ERR_OK){
         printf("dht read error:%d\n", ret);
         return;

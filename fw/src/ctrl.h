@@ -9,16 +9,15 @@
 #include "rtc.h"
 #include "fb.h"
 #include "usart.h"
+#include "timer.h"
+#include "view.h"
 
 
 typedef struct _ctrl_{
-    dht_data_t dht_data;
-    rtc_date_time_t rtc_date_time;
-    uint8_t state;
-
+  view_data_t view_data;
 } ctrl_t;
 
-typedef void (*timer_fn_t)(void*);
+
 
 
 
@@ -45,8 +44,6 @@ void _ctrl_timer_flash_dot(void* p);
 
 // helper functions
 void _ctrl_init_timers(ctrl_t* ctrl);
-void _ctrl_new_timer(const char* name, uint16_t tick_count, timer_fn_t timer_fn);
-
 
 
 

@@ -19,7 +19,7 @@ const font_t font_4x7_led[] PROGMEM = {
         0 // here is the end flag.
 };
 
-uint8_t font_get_glyph(font_t* font, char encoding, glyph_t* glyph){
+uint8_t font_get_glyph(const font_t* font, char encoding, glyph_t* glyph){
         glyph_t* pos =(glyph_t *) font;
         char ch = 0;
         do{

@@ -34,8 +34,8 @@ typedef struct _fb_ {
 fb_t* fb_default();
 void fb_init(fb_t* fb);
 void fb_clear_display(fb_t* fb);
-uint8_t fb_draw_char(fb_t* fb, char ch, uint8_t x, uint8_t y, font_t* font);
-uint8_t fb_draw_string(fb_t* fb, char* str, uint8_t x, uint8_t y, font_t* font);
+uint8_t fb_draw_char(fb_t* fb, char ch, uint8_t x, uint8_t y, const font_t* font);
+uint8_t fb_draw_string(fb_t* fb, char* str, uint8_t x, uint8_t y, const font_t* font);
 void fb_set_brightness(fb_t* fb, uint8_t level);
 void fb_flush(fb_t* fb);
 
