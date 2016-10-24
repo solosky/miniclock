@@ -80,6 +80,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
 all the API functions to use the MPU wrappers.  That should only be done when
@@ -92,7 +93,7 @@ task.h is included from an application file. */
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /*-----------------------------------------------------------*/
-
+uint16_t used = 0;
 void *pvPortMalloc( size_t xWantedSize )
 {
 void *pvReturn;
@@ -113,6 +114,8 @@ void *pvReturn;
 		}
 	}
 	#endif
+	used += xWantedSize;
+	printf("malloc:want=%d,return=0x%X,used=%d\n", xWantedSize, (uint16_t)pvReturn, used);
 
 	return pvReturn;
 }
@@ -128,8 +131,6 @@ void vPortFree( void *pv )
 			traceFREE( pv, 0 );
 		}
 		( void ) xTaskResumeAll();
+		printf("free: 0x%x\n", (int16_t) pv);
 	}
 }
-
-
-

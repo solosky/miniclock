@@ -14,7 +14,6 @@
 
 
 typedef struct _ctrl_{
-  view_data_t view_data;
 } ctrl_t;
 
 

@@ -8,9 +8,9 @@ view_t _view0;
 // view pages
 //page id, render_interval, render fn
 const view_page_t _view_pages[] PROGMEM = {
-        {PG_TIME, 400, _view_render_time},
-        {PG_TEMP, 0, _view_render_temp},
-        {PG_HUMIDITY, 0, _view_render_humidity},
+        {PG_TIME, 500, _view_render_time},
+        {PG_TEMP, 1000, _view_render_temp},
+        {PG_HUMIDITY, 1000, _view_render_humidity},
         {PG_DATE, 0, _view_render_date},
         {0,0,0}
 };
@@ -36,6 +36,7 @@ view_t * view_default(){
 
 void view_init(view_t* view, fb_t* fb){
         view->fb = fb;
+        view->view_page_head = _view_pages;
 }
 
 
@@ -67,19 +68,49 @@ void view_show_chain(view_t* view, const view_chain_t* head){
 ////////////////////////////////////////////////////////////////
 void _view_render_time(view_t* view){
         char buff[6];
-        rtc_date_time_t* dt = &(view->view_data.rtc_date_time);
-        sprintf(buff, "%02d:%02d", dt->minute, dt->second);
+        //rtc_date_time_t* dt = &(view->view_data.rtc_date_time);
+        rtc_time_t * tm = &(rtc_default()->rtc_time);
+        char dot = (view->render_tick & 1) ? ' ' : ':';
+        sprintf(buff, "%02d%c%02d", tm->minute, dot,  tm->second);
         fb_clear_display(view->fb);
         fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
         fb_flush(view->fb);
 }
+
 void _view_render_date(view_t* view){
+  char buff[6];
 
+  sprintf(buff, "%s", "123");
+  fb_clear_display(view->fb);
+  fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
+  fb_flush(view->fb);
 }
+
+
 void _view_render_temp(view_t* view){
+        char buff[6];
+        dht_data_t* dht_data = &(view->view_data.dht_data);
+        uint8_t temp_1 = dht_data->temperature / 10;
+        uint8_t temp_2 = dht_data->temperature - temp_1 * 10;
+        sprintf(buff, "%.02d.%.1d", temp_1, temp_2);
+        buff[ strlen(buff)] = 0xE0;
 
+        fb_clear_display(view->fb);
+        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
+        fb_flush(view->fb);
 }
+
+
 void _view_render_humidity(view_t* view){
+        char buff[6];
+        dht_data_t* dht_data = &(view->view_data.dht_data);
+        uint8_t humidity_1 = dht_data->humidity / 10;
+        uint8_t humidity_2 = dht_data->humidity - humidity_1 * 10;
+        sprintf(buff, "%.02d.%.1d%%", humidity_1, humidity_2);
+
+        fb_clear_display(view->fb);
+        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
+        fb_flush(view->fb);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -127,9 +158,9 @@ void _view_chain_next(view_t* view, bool_t first){
 
         //next page timer
         if(chain.next_page_delay > 0) {
-                view->next_page_timer = timer_new("view_next",
+                view->next_page_timer = timer_new("vn",
                                                   chain.next_page_delay / portTICK_PERIOD_MS,
-                                                   _view_timer_next_page, false);
+                                                  _view_timer_next_page, false);
                 if(view->next_page_timer == NULL) {
                         printf("create next page timer failed!\n");
                 }
@@ -152,7 +183,7 @@ void _view_show_single_page(view_t* view, view_page_t* view_page){
 
         // set render timer
         if(view_page->render_interval > 0) {
-                view->render_tick_timer = timer_new("view_render",
+                view->render_tick_timer = timer_new("vr",
                                                     view_page->render_interval / portTICK_PERIOD_MS,
                                                     _view_timer_render_page, true);
                 if(view->render_tick_timer == NULL) {
@@ -168,6 +199,7 @@ void _view_timer_next_page(void* p){
 
 void _view_timer_render_page(void* p){
         view_t* view = view_default();
+        view->render_tick ++;
         view->view_page_current.render_fn(view);
 }
 
@@ -178,7 +210,7 @@ result_t _view_pgm_read_chain_first(view_t* view, view_chain_t* view_chain_out){
 
 result_t _view_pgm_find_chain(view_t* view, uint8_t page_id, view_chain_t* view_chain_out){
         uint8_t page_id_now;
-        uint16_t p = (uint16_t) view->view_chain_head;
+        uint8_t* p = (uint8_t*) view->view_chain_head;
         do {
                 page_id_now = pgm_read_byte(p);
                 if(page_id_now == page_id) {
@@ -194,14 +226,14 @@ result_t _view_pgm_find_chain(view_t* view, uint8_t page_id, view_chain_t* view_
 
 result_t _view_pgm_find_page(view_t* view, uint8_t page_id, view_page_t* view_page_out){
         uint8_t page_id_now;
-        uint16_t p = (uint16_t) view->view_page_head;
+        uint8_t *p = (uint8_t*) view->view_page_head;
         do {
                 page_id_now = pgm_read_byte(p);
                 if(page_id_now == page_id) {
                         memcpy_P(view_page_out, (void*)p, sizeof(view_page_t));
                         return ERR_OK;
                 }else{
-                        p += sizeof(view_chain_t);
+                        p += sizeof(view_page_t);
                 }
         } while(page_id_now > 0);
 

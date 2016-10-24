@@ -12,7 +12,7 @@
 #define ERR_RECORD_NOT_FOUND 3
 
 enum _page_id {
-        PG_TIME, //hour:minute
+        PG_TIME = 10, //hour:minute
         PG_DATE, //month day
         PG_YEAR, //year
         PG_TEMP, //temperature

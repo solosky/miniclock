@@ -24,9 +24,9 @@ uint8_t font_get_glyph(const font_t* font, char encoding, glyph_t* glyph){
         glyph_t* pos =(glyph_t *) font;
         char ch = 0;
         do{
-                ch = pgm_read_byte(&pos);
+                ch = pgm_read_byte(pos);
                 if(ch == encoding) {
-                        memcpy_P(glyph, &pos, sizeof(glyph_t));
+                        memcpy_P(glyph, pos, sizeof(glyph_t));
                         return 0;
                 } else {
                         pos++;

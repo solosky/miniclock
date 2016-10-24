@@ -91,15 +91,15 @@
 #define configUSE_MALLOC_FAILED_HOOK	1
 #define configMAX_PRIORITIES		    ( ( UBaseType_t ) 4 )
 #define configMINIMAL_STACK_SIZE	    ( ( UBaseType_t ) 85 )
-#define configIDLE_STACK_SIZE	   		( ( UBaseType_t ) 128 )
+#define configIDLE_STACK_SIZE	   		( ( UBaseType_t ) 85 )
 #define configMAX_TASK_NAME_LEN		    ( 8 )
 
 /* Timer definitions. */
 #define configUSE_TIMERS				1
 #define configTIMER_TASK_PRIORITY       ( ( UBaseType_t ) 3 )
-#define configTIMER_QUEUE_LENGTH        ( ( UBaseType_t ) 10 )
+#define configTIMER_QUEUE_LENGTH        ( ( UBaseType_t ) 5 )
 //#define configTIMER_TASK_STACK_DEPTH    configMINIMAL_STACK_SIZE
-#define configTIMER_TASK_STACK_DEPTH    256 
+#define configTIMER_TASK_STACK_DEPTH   128
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		    0

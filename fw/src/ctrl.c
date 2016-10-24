@@ -16,6 +16,8 @@ void ctrl_init(ctrl_t* ctrl){
     usart_init(usart_default(), DBG_USART_BAUD);
     debug_init(usart_default());
 
+    printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+
     //device i2c_init
     fb_init(fb_default());
     i2c_init(i2c_default());
@@ -30,6 +32,9 @@ void ctrl_init(ctrl_t* ctrl){
     _ctrl_init_timers(ctrl);
 
     view_show_chain(view_default(), _view_chain_default);
+    //view_show_page(view_default(), PG_TIME);
+    //view_show_page(view_default(), PG_HUMIDITY);
+    //view_show_page(view_default(), PG_TEMP);
 
 }
 
@@ -53,11 +58,13 @@ void _ctrl_timer_flash_dot(void* p){
 }
 
 void _ctrl_timer_read_dht(void* p){
-      result_t ret = dht_read(dht_default(), &(ctrl_default()->view_data.dht_data));
+      dht_data_t* dht_data = &(view_default()->view_data.dht_data);
+      result_t ret = dht_read(dht_default(), dht_data);
       if(ret != ERR_OK){
         printf("dht read error:%d\n", ret);
         return;
       }
+      //printf("dht: %d %d\n", dht_data->humidity, dht_data->temperature);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
