@@ -27,7 +27,7 @@
 #define KEY_MAX_RELEASED_CYCLE 5
 #define KEY_MAX_PRESSED_CYCLE 2
 #define KEY_MAX_TRIGGER_CYCLE 10
-#define KEY_MAX_PRESSED_LONG_CYCLE 10 * 10
+#define KEY_MAX_PRESSED_LONG_CYCLE 10 * 15
 
 
 //callback defines
@@ -35,7 +35,7 @@ typedef void (*key_event_fn_t)(uint8_t key, uint8_t event);
 
 typedef struct _key_ {
   uint8_t adc_pin;
-  bool_t sampling;
+  bool_t pressed_long;
   uint8_t pressed_key;
   uint8_t pressed_cycle;
   uint8_t trigger_cycle;

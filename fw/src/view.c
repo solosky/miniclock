@@ -8,23 +8,24 @@ view_t _view0;
 // view pages
 //page id, render_interval, render fn
 const view_page_t _view_pages[] PROGMEM = {
-        {PG_TIME, VIEW_TICK_OF_TIME(500), _view_render_time},
+        {PG_TIME, VIEW_TICK_OF_TIME(450), _view_render_time},
         {PG_TEMP, VIEW_TICK_OF_TIME(1000), _view_render_temp},
         {PG_HUMIDITY, VIEW_TICK_OF_TIME(1000), _view_render_humidity},
         {PG_DATE, 0, _view_render_date},
-        {PG_TIME_SET, VIEW_TICK_OF_TIME(1000), _view_render_time_set},
-        {PG_DATE_SET, VIEW_TICK_OF_TIME(1000), _view_render_date_set},
-        {PG_FONT_SET, VIEW_TICK_OF_TIME(1000), _view_render_font_set},
+        {PG_TIME_SET, VIEW_TICK_OF_TIME(450), _view_render_time_set},
+        {PG_DATE_SET, VIEW_TICK_OF_TIME(450), _view_render_date_set},
+        {PG_YEAR_SET, VIEW_TICK_OF_TIME(450), _view_render_date_set},
+        {PG_FONT_SET, VIEW_TICK_OF_TIME(450), _view_render_font_set},
         {0,0,0}
 };
 
 //view chains
 //page id, next page id, next delay
 const view_chain_t _view_chain_default[] PROGMEM = {
-        {PG_TIME, PG_DATE, VIEW_TICK_OF_TIME(5000)},
-        {PG_DATE, PG_TEMP, VIEW_TICK_OF_TIME(3000)},
-        {PG_TEMP, PG_HUMIDITY, VIEW_TICK_OF_TIME(3000)},
-        {PG_HUMIDITY, PG_TIME, VIEW_TICK_OF_TIME(3000)},
+        {PG_TIME, PG_DATE, VIEW_TICK_OF_TIME(8000)},
+        {PG_DATE, PG_TEMP, VIEW_TICK_OF_TIME(1000)},
+        {PG_TEMP, PG_HUMIDITY, VIEW_TICK_OF_TIME(1000)},
+        {PG_HUMIDITY, PG_TIME, VIEW_TICK_OF_TIME(1000)},
         {0,0,0}
 };
 
@@ -66,6 +67,8 @@ void view_frame_tick(view_t* view){
 void view_show_page(view_t* view, uint8_t page_id){
         view_page_t page;
         result_t ret;
+
+        printf("show page:%d\n", page_id);
 
         //find page info
         ret = _view_pgm_find_page(view, page_id, &page);
@@ -141,9 +144,9 @@ void _view_render_time_set(view_t* view){
         rtc_date_time_t* dt = &(view->view_data.rtc_date_time);
         bool_t hide = (view->render_cnt & 1);
         if(view->view_data.set_field == SF_HOUR && hide) {
-                sprintf(buff, "  :%02d", dt->minute);
+                sprintf(buff, "$$:%02d", dt->minute);
         }else if(view->view_data.set_field == SF_MINUTE && hide) {
-                sprintf(buff, "%02d:  ", dt->hour);
+                sprintf(buff, "%02d:$$", dt->hour);
         }else{
                 sprintf(buff, "%02d:%02d", dt->hour, dt->minute);
         }
@@ -157,11 +160,11 @@ void _view_render_date_set(view_t* view){
         rtc_date_time_t* dt = &(view->view_data.rtc_date_time);
         bool_t hide = (view->render_cnt & 1);
         if(view->view_data.set_field == SF_MONTH && hide) {
-                sprintf(buff, "  /%02d", dt->month);
+                sprintf(buff, "$$/%02d", dt->day);
         }else if(view->view_data.set_field == SF_DAY && hide) {
-                sprintf(buff, "%02d/  ", dt->day);
+                sprintf(buff, "%02d/$$", dt->month);
         }else{
-                sprintf(buff, "%02d:%02d", dt->month, dt->day);
+                sprintf(buff, "%02d/%02d", dt->month, dt->day);
         }
         fb_clear_display(view->fb);
         fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
@@ -185,12 +188,11 @@ void _view_chain_next(view_t* view, bool_t first){
         view_chain_t chain;
         view_page_t page;
         result_t ret;
-
         // find next page of chain
         if(first) {
                 ret = _view_pgm_read_chain_first(view, &chain);
         }else{
-                ret = _view_pgm_find_chain(view, view->view_page_current.page_id, &chain);
+                ret = _view_pgm_find_chain(view, view->view_chain_current.next_page_id, &chain);
         }
         if(ret != ERR_OK) {
                 printf("next page of chain not found: code=%d\n", ret);
@@ -214,6 +216,9 @@ void _view_show_single_page(view_t* view, view_page_t* view_page){
         view->next_page_tick = 0;
         view->render_tick = 0;
         view->render_cnt = 0;
+        // printf("show single page:%d=>%d,%d\n", view_page->page_id,
+        //        view->view_chain_current.next_page_id,
+        //        view->view_chain_current.next_page_tick);
 }
 
 result_t _view_pgm_read_chain_first(view_t* view, view_chain_t* view_chain_out){

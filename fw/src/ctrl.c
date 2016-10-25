@@ -71,6 +71,7 @@ void _ctrl_timer_read_dht(void* p){
 }
 
 void _ctrl_switch_mode(ctrl_t* ctrl, uint8_t ctrl_mode){
+      printf("switch:%d\n", ctrl_mode);
         view_t* view = view_default();
         view_data_t* view_data = &(view->view_data);
         if(ctrl_mode != view_data->ctrl_mode) {
@@ -79,7 +80,8 @@ void _ctrl_switch_mode(ctrl_t* ctrl, uint8_t ctrl_mode){
                         //TODO save setting
                         view_show_chain(view, _view_chain_default);
                 }else{
-                        view_show_page(view, PG_DATE_SET);
+                        view_data->set_field = SF_HOUR;
+                        view_show_page(view,PG_TIME_SET);
                 }
         }
 
@@ -88,17 +90,21 @@ void _ctrl_switch_mode(ctrl_t* ctrl, uint8_t ctrl_mode){
 ////////////////////////////////////////////////////////////////////////////////
 
 void _ctrl_callback_on_key(uint8_t key, uint8_t event){
+  printf("key:%d,%d\n",key, event);
         view_t* view = view_default();
         ctrl_t* ctrl = ctrl_default();
         view_data_t * view_data = &(view_default()->view_data);
-        if(key == KEY_ADC_KEY_2_VALUE) {
+        if(key == KEY_2) {
                 if( event == KEY_EVENT_KEYDOWN_LONG) {
                         //enter setting mode
-                        if(view_data->ctrl_mode == CM_NORMAL) {
-                                _ctrl_switch_mode(ctrl, CM_SETTING);
-                        }
+                  // if(view_data->ctrl_mode == CM_NORMAL) {
+//         _ctrl_switch_mode(ctrl, CM_SETTING);
+// }
                 }else if(event == KEY_EVENT_KEYDOWN) {
-                        if(view_data->ctrl_mode == CM_SETTING) {
+                  //enter setting mode
+                      if(view_data->ctrl_mode == CM_NORMAL) {
+                              _ctrl_switch_mode(ctrl, CM_SETTING);
+                      }else if(view_data->ctrl_mode == CM_SETTING) {
                                 //next set field
                                 if(view_data->set_field == SF_YEAR) {
                                         //exit set mode
@@ -134,7 +140,7 @@ void _ctrl_callback_on_key(uint8_t key, uint8_t event){
 }
 
 void _ctrl_callback_on_lux(uint16_t lux){
-        printf("lux: %d\n",lux);
+        //printf("lux: %d\n",lux);
         fb_t* fb = fb_default();
         if(lux < 100) {
                 fb_set_brightness(fb, 7);
@@ -158,7 +164,7 @@ void _ctrl_callback_on_lux(uint16_t lux){
 // magic, haha
 #define ADD_DELTA(ob, f, min, max, delta) {if(ob->f + delta == max) {ob->f = min;}else if(ob->f + delta == min) {ob->f = max;}else{ ob->f++;}}
 
-void _ctrl_adjust_field_value(ctrl_t* ctrl, uint8_t delta){
+void _ctrl_adjust_field_value(ctrl_t* ctrl, int8_t delta){
         view_data_t* view_data = &(view_default()->view_data);
         rtc_date_time_t* dt = &(view_data->rtc_date_time);
         switch(view_data->set_field) {

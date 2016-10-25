@@ -49,7 +49,7 @@ void _ctrl_switch_mode(ctrl_t* ctrl, uint8_t ctrl_mode);
 
 // helper functions
 void _ctrl_init_timers(ctrl_t* ctrl);
-void _ctrl_adjust_field_value(ctrl_t* ctrl, uint8_t delta);
+void _ctrl_adjust_field_value(ctrl_t* ctrl, int8_t delta);
 
 
 
