@@ -41,7 +41,7 @@ void _ctrl_callback_on_lux(uint16_t lux);
 void _ctrl_timer_key_scan(void* p);
 void _ctrl_timer_read_lux(void* p);
 void _ctrl_timer_read_dht(void* p);
-void _ctrl_timer_flash_dot(void* p);
+void _ctrl_timer_read_rtc(void* p);
 void _ctrl_timer_view_tick(void* p);
 
 void _ctrl_switch_mode(ctrl_t* ctrl, uint8_t ctrl_mode);
@@ -50,6 +50,7 @@ void _ctrl_switch_mode(ctrl_t* ctrl, uint8_t ctrl_mode);
 // helper functions
 void _ctrl_init_timers(ctrl_t* ctrl);
 void _ctrl_adjust_field_value(ctrl_t* ctrl, int8_t delta);
+void _ctrl_apply_setting_value(ctrl_t* ctrl);
 
 
 

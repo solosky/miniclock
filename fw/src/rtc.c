@@ -64,9 +64,10 @@ result_t rtc_write(rtc_t* rtc, rtc_date_time_t* rtc_date_time){
         buff[1] = _rtc_dec2bcd(rtc_date_time->second);
         buff[2] = _rtc_dec2bcd(rtc_date_time->minute);
         if(rtc_date_time->h24) {
-                buff[3] = _rtc_bcd2dec(rtc_date_time->hour) | _BV(6);
+                buff[3] = _rtc_dec2bcd(rtc_date_time->hour);
         }else{
-                buff[3] = _rtc_bcd2dec(rtc_date_time->hour);
+                buff[3] = _rtc_dec2bcd(rtc_date_time->hour);
+                buff[3] |= _BV(6);
                 if(rtc_date_time->pm) {
                         buff[3] |= _BV(5);
                 }

@@ -159,6 +159,7 @@ void key_scan(key_t* key){
 void _key_reset_key(key_t* key){
         key->pressing_tick = 0;
         key->releasing_tick = 0;
+        key->pressed_tick = 0;
         key->key_state = KS_NONE;
         key->pressed_key = KEY_NONE;
 }

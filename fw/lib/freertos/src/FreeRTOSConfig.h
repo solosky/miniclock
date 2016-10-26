@@ -99,7 +99,7 @@
 #define configTIMER_TASK_PRIORITY       ( ( UBaseType_t ) 3 )
 #define configTIMER_QUEUE_LENGTH        ( ( UBaseType_t ) 20 )
 //#define configTIMER_TASK_STACK_DEPTH    configMINIMAL_STACK_SIZE
-#define configTIMER_TASK_STACK_DEPTH   100
+#define configTIMER_TASK_STACK_DEPTH  256 
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		    0

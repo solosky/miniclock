@@ -6,6 +6,7 @@
 #include "rtc.h"
 #include "timer.h"
 #include "fb.h"
+#include "setting.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -45,20 +46,11 @@ enum _set_field {
 
 //
 enum _ctrl_mode {
-        CM_SETTING,
-        CM_NORMAL
+        CM_NORMAL,
+        CM_SETTING
 };
 
-// font type
-enum _font_type {
-        FT_LED,
-        FT_ARIA
-};
 
-//setting info, store in eeprom
-typedef struct _setting_data_ {
-        uint8_t font_type;
-} setting_data_t;
 
 //view data, shared with ctrl module
 typedef struct _view_data_ {
@@ -118,6 +110,7 @@ void view_init(view_t* view,fb_t* fb);
 void view_frame_tick(view_t* view);
 void view_show_page(view_t* view, uint8_t page_id);
 void view_show_chain(view_t* view, const view_chain_t* head);
+void view_flip_next(view_t* view);
 
 
 //////////////////////////////////////////////////////////////////////
@@ -130,7 +123,10 @@ void _view_render_humidity(view_t* view);
 
 void _view_render_time_set(view_t* view);
 void _view_render_date_set(view_t* view);
+void _view_render_year_set(view_t* view);
 void _view_render_font_set(view_t* view);
+
+void _view_draw_string(view_t* view, char* str);
 
 void _view_show_single_page(view_t* view, view_page_t* view_page);
 void _view_chain_next(view_t* view, bool_t first);

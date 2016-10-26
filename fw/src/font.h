@@ -17,15 +17,18 @@ typedef struct _glyph_{
   byte_t bitmap[7]; //7x8bit
 } glyph_t;
 
-
-// 7-seg style font
-extern const font_t font_4x7_led[];
+// font type
+enum _font_type {
+        FT_LED,
+        FT_ARIA
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // public functions
 ///////////////////////////////////////////////////////////////////////////////
 uint8_t font_get_glyph(const font_t* font, char encoding, glyph_t* glyph);
+font_t* font_get_font(uint8_t font_type);
 
 
 

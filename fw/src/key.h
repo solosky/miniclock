@@ -26,7 +26,7 @@
 
 #define KEY_MAX_RELEASING_TICK 5
 #define KEY_MAX_PRESSING_TICK 2
-#define KEY_MAX_PRESSED_LONG_TICK 10 * 15
+#define KEY_MAX_PRESSED_LONG_TICK 10 * 10
 
 enum _key_state_{
     KS_NONE, //No key pressed

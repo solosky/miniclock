@@ -14,7 +14,7 @@ const view_page_t _view_pages[] PROGMEM = {
         {PG_DATE, 0, _view_render_date},
         {PG_TIME_SET, VIEW_TICK_OF_TIME(450), _view_render_time_set},
         {PG_DATE_SET, VIEW_TICK_OF_TIME(450), _view_render_date_set},
-        {PG_YEAR_SET, VIEW_TICK_OF_TIME(450), _view_render_date_set},
+        {PG_YEAR_SET, VIEW_TICK_OF_TIME(450), _view_render_year_set},
         {PG_FONT_SET, VIEW_TICK_OF_TIME(450), _view_render_font_set},
         {0,0,0}
 };
@@ -39,6 +39,7 @@ view_t * view_default(){
 
 
 void view_init(view_t* view, fb_t* fb){
+        zero(view, sizeof(view_t));
         view->fb = fb;
         view->view_page_head = _view_pages;
 }
@@ -88,28 +89,27 @@ void view_show_chain(view_t* view, const view_chain_t* head){
         _view_chain_next(view, true);
 }
 
+void view_flip_next(view_t* view){
+      _view_chain_next(view, false);
+}
 
 /////////////////////////////////////////////////////////////////
 // render functions
 ////////////////////////////////////////////////////////////////
 void _view_render_time(view_t* view){
         char buff[6];
-        //rtc_date_time_t* dt = &(view->view_data.rtc_date_time);
-        rtc_time_t * tm = &(rtc_default()->rtc_time);
+        rtc_date_time_t* dt = &(view->view_data.rtc_date_time);
+        //rtc_time_t * tm = &(rtc_default()->rtc_time);
         char dot = (view->render_cnt & 1) ? ' ' : ':';
-        sprintf(buff, "%02d%c%02d", tm->minute, dot,  tm->second);
-        fb_clear_display(view->fb);
-        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
-        fb_flush(view->fb);
+        sprintf(buff, "%02d%c%02d", dt->hour, dot,  dt->minute);
+        _view_draw_string(view, buff);
 }
 
 void _view_render_date(view_t* view){
         char buff[6];
         rtc_date_time_t* dm = &(view->view_data.rtc_date_time);
         sprintf(buff, "%02d/%02d", dm->month, dm->day);
-        fb_clear_display(view->fb);
-        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
-        fb_flush(view->fb);
+        _view_draw_string(view, buff);
 }
 
 void _view_render_temp(view_t* view){
@@ -120,9 +120,7 @@ void _view_render_temp(view_t* view){
         sprintf(buff, "%.02d.%.1d", temp_1, temp_2);
         buff[ strlen(buff)] = 0xE0;
 
-        fb_clear_display(view->fb);
-        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
-        fb_flush(view->fb);
+        _view_draw_string(view, buff);
 }
 
 
@@ -132,10 +130,7 @@ void _view_render_humidity(view_t* view){
         uint8_t humidity_1 = dht_data->humidity / 10;
         uint8_t humidity_2 = dht_data->humidity - humidity_1 * 10;
         sprintf(buff, "%.02d.%.1d%%", humidity_1, humidity_2);
-
-        fb_clear_display(view->fb);
-        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
-        fb_flush(view->fb);
+        _view_draw_string(view, buff);
 }
 
 
@@ -150,9 +145,7 @@ void _view_render_time_set(view_t* view){
         }else{
                 sprintf(buff, "%02d:%02d", dt->hour, dt->minute);
         }
-        fb_clear_display(view->fb);
-        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
-        fb_flush(view->fb);
+        _view_draw_string(view, buff);
 }
 
 void _view_render_date_set(view_t* view){
@@ -166,22 +159,38 @@ void _view_render_date_set(view_t* view){
         }else{
                 sprintf(buff, "%02d/%02d", dt->month, dt->day);
         }
-        fb_clear_display(view->fb);
-        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
-        fb_flush(view->fb);
+        _view_draw_string(view, buff);
+}
+
+void _view_render_year_set(view_t* view){
+        char buff[6];
+        rtc_date_time_t* dt = &(view->view_data.rtc_date_time);
+        bool_t hide = (view->render_cnt & 1);
+        if(hide) {
+                sprintf(buff, "%s", "$$$$");
+        }else{
+                sprintf(buff, "20%02d", dt->year);
+        }
+
+        _view_draw_string(view, buff);
 }
 
 void _view_render_font_set(view_t* view){
         char buff[6];
-        sprintf(buff, "%s", "123456");
-        fb_clear_display(view->fb);
-        fb_draw_string(view->fb, buff, 0, 0, font_4x7_led);
-        fb_flush(view->fb);
+        sprintf(buff, "%s", "12:34");
+        _view_draw_string(view, buff);
 }
 
 /////////////////////////////////////////////////////////////////
 // helper functions
 ////////////////////////////////////////////////////////////////
+
+void _view_draw_string(view_t* view, char* str){
+        font_t* font = font_get_font(view->view_data.setting_data.font_type);
+        fb_clear_display(view->fb);
+        fb_draw_string(view->fb, str, 0, 0, font);
+        fb_flush(view->fb);
+}
 
 
 void _view_chain_next(view_t* view, bool_t first){

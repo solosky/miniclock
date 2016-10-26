@@ -115,7 +115,7 @@ void *pvReturn;
 	}
 	#endif
 	used += xWantedSize;
-	printf("malloc:want=%d,return=0x%X,used=%d\n", xWantedSize, (uint16_t)pvReturn, used);
+	//printf("malloc:want=%d,return=0x%X,used=%d\n", xWantedSize, (uint16_t)pvReturn, used);
 
 	return pvReturn;
 }
@@ -131,6 +131,6 @@ void vPortFree( void *pv )
 			traceFREE( pv, 0 );
 		}
 		( void ) xTaskResumeAll();
-		printf("free: 0x%x\n", (int16_t) pv);
+		//printf("free: 0x%x\n", (int16_t) pv);
 	}
 }
