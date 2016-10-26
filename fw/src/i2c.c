@@ -1,5 +1,4 @@
 #include "i2c.h"
-#include "buffer.h"
 #include "utility/twi.h"
 
 i2c_t _i2c0;

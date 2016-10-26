@@ -1,7 +1,6 @@
 #ifndef IIC_H
 #define IIC_H
 #include "base.h"
-#include "buffer.h"
 
 #define I2C_RX_BUFF_SIZE 32
 
