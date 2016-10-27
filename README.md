@@ -4,8 +4,8 @@
 
 ---
 
-![image](http://github.com/solosky/miniclock/raw/master/img/main.png)
-![image](http://github.com/solosky/miniclock/raw/master/img/preview.gif)
+![image](https://github.com/solosky/miniclock/raw/master/img/main.png)
+![image](https://github.com/solosky/miniclock/raw/master/img/preview.gif)
 
 
 # 特色
@@ -99,14 +99,14 @@ MCU基于Arduino方案，ATmega328p + CH340。这方案很经典，可以一直�
 
 首先需要焊接好ISP座子，然后你需要一个ATMEL的USBISP编程器，如下图（如果没有可以求助马云家的）。
 
-![image](http://github.com/solosky/miniclock/raw/master/img/usbisp.png)
+![image](https://github.com/solosky/miniclock/raw/master/img/usbisp.png)
 1. 按照下图用杜邦线连接 时钟和编程器。<br>
-![image](http://github.com/solosky/miniclock/raw/master/img/isp_connector.png)
+![image](https://github.com/solosky/miniclock/raw/master/img/isp_connector.png)
 2. 下载 Prog ISP编程软件，运行主程序。<br>
 3. 点击RD，如果下面提示框中提示“读出ID成功”，则表示线连接正确，可以写入固件。<br>
-![image](http://github.com/solosky/miniclock/raw/master/img/ispprog.png)
+![image](https://github.com/solosky/miniclock/raw/master/img/ispprog.png)
 4. 点击熔丝位设置，分别设置如下值，然后点击写入熔丝设置。<br>
-![image](http://github.com/solosky/miniclock/raw/master/img/fuse.png)
+![image](https://github.com/solosky/miniclock/raw/master/img/fuse.png)
 ```
 low_fuses=0xFF
 high_fuses=0xDA
