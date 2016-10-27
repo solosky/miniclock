@@ -96,7 +96,7 @@ MCU基于Arduino方案，ATmega328p + CH340。这方案很经典，可以一直�
  - 蜂鸣器和电池座注意焊接的方向
  
  
- # 刷固件相关软件下载
+# 刷固件相关软件下载
 
 http://pan.baidu.com/s/1dELJjPn
 
@@ -115,7 +115,7 @@ http://pan.baidu.com/s/1dELJjPn
 ```
 low_fuses=0xFF
 high_fuses=0xDA
-extended_fuses=0x05
+extended_fuses=0xFD
 ```
 5. 下载最新版本固件（git目录中为build/miniclock-full-firmware-1.0.hex），然后点击文件/调入Flash，选择最新版的固件，点击打开。<br>
 6. 点击菜单，命令/写入Flash，稍等片刻即可刷入最新固件。<br>
@@ -125,7 +125,7 @@ extended_fuses=0x05
  - build文件夹有个miniclock-beep-with-bootloader.hex，可以首先刷入这个固件来测试，如果写入成功，蜂鸣器会以间隔一秒的时间蜂鸣；
  - 如果写入提示成功，但是硬件没有反应，建议在刷机软件中点击擦除按钮后重新刷入固件再试。
 
-# 给想改固件的童鞋说明
+# 给想改固件的童鞋说明FD
 
 ### 如果要改固件，有几个前提：
 
@@ -154,9 +154,9 @@ http-proxy=http://127.0.0.1:1080
 https-proxy=http://127.0.0.1:1080
 strict-ssl=false
 ```
-atom用户目录
-windows下为 C:\Users\{登录用户}\.atom
-linux mac为 ~/.atom
+### atom用户目录
+windows下为 C:\Users\{登录用户}\.atom<br>
+linux或者mac为 ~/.atom<br>
 
 上面的步骤都完了之后，点击菜单 PlatformIO / Build之后IDE就会自动构建，成功后构建窗口有提示。
 点击菜单 Platform / Upload，IDE就会自动上传固件到时钟里面并运行。<br>
