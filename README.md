@@ -4,7 +4,9 @@
 
 ---
 
-[图片系列]
+(http://github.com/solosky/miniclock/raw/master/img/main.png)
+(http://github.com/solosky/miniclock/raw/master/img/back.png)
+(http://github.com/solosky/miniclock/raw/master/img/2fonts.png)
 
 # 特色
 
@@ -64,6 +66,9 @@ MCU基于Arduino方案，ATmega328p + CH340。这方案很经典，可以一直�
 
 # 说明书
 
+### 预览
+(http://github.com/solosky/miniclock/raw/master/img/preview.gif)
+
 ### 普通显示模式
 
  - 显示时间 10秒钟
@@ -96,34 +101,35 @@ MCU基于Arduino方案，ATmega328p + CH340。这方案很经典，可以一直�
 
 首先需要焊接好ISP座子，然后你需要一个ATMEL的USBISP编程器，如下图（如果没有可以求助马云家的）。
 
-[编程器图片]
+(http://github.com/solosky/miniclock/raw/master/img/usbisp.png)
 1. 按照下图用杜邦线连接 时钟和编程器。<br>
-[ISP连接图片]
-2. 下载 USB Prog编程软件，运行主程序。<br>
-3. 点击RD，如果下面提示框中提示读出芯片ID成功，则表示线连接正确，可以写入固件。<br>
-4. 点击熔丝位设置，分别设置如下值，然后点击写入。<br>
-[熔丝位设置图片]
+(http://github.com/solosky/miniclock/raw/master/img/isp_connector.png)
+2. 下载 Prog ISP编程软件，运行主程序。<br>
+3. 点击RD，如果下面提示框中提示“读出ID成功”，则表示线连接正确，可以写入固件。<br>
+(http://github.com/solosky/miniclock/raw/master/img/ispprog.png)
+4. 点击熔丝位设置，分别设置如下值，然后点击写入熔丝设置。<br>
+(http://github.com/solosky/miniclock/raw/master/img/fuse.png)
 ```
 low_fuses=0xFF
 high_fuses=0xDA
 extended_fuses=0x05
 ```
-5. 下载最新版本固件，然后点击文件/调入Flash，选择最新版的固件，点击打开。<br>
+5. 下载最新版本固件（git目录中为build/miniclock-full-firmware-1.0.hex），然后点击文件/调入Flash，选择最新版的固件，点击打开。<br>
 6. 点击菜单，命令/写入Flash，稍等片刻即可刷入最新固件。<br>
 
 一些提示：
 
- - build文件夹有个beep_with_bootloader.hex，可以首先刷入这个固件来测试，如果写入成功，蜂鸣器会以间隔一秒的时间蜂鸣；
+ - build文件夹有个miniclock-beep-with-bootloader.hex，可以首先刷入这个固件来测试，如果写入成功，蜂鸣器会以间隔一秒的时间蜂鸣；
  - 如果写入提示成功，但是硬件没有反应，建议在刷机软件中点击擦除按钮后重新刷入固件再试。
 
 # 给想改固件的童鞋说明
 
 ### 如果要改固件，有几个前提：
 
-1. 你需要按照上面初次刷固件的说明，成功的刷入完整的固件，或者测试固件beep_with_bootloader.hex。
+1. 你需要按照上面初次刷固件的说明，成功的刷入完整的固件，或者测试固件miniclock-beep-with-bootloader.hex。
 2. 焊接好CH340G和周边电路。
 3. 安装好CH340G驱动。
-4. 插上MicroUSB后，打开设备管理器，Ports(COM /LPT)节点下能出现一个USB Serial CH340G的串口。
+4. 插上MicroUSB后，打开设备管理器，Ports(COM /LPT)节点下能出现一个USB-Serial CH340G的串口。
 5. 短接CH340G的TX和RX端，能通过串口测试。
 
 ### 相关软件下载
