@@ -5,8 +5,8 @@
 ---
 
 (http://github.com/solosky/miniclock/raw/master/img/main.png)
-(http://github.com/solosky/miniclock/raw/master/img/back.png)
-(http://github.com/solosky/miniclock/raw/master/img/2fonts.png)
+(http://github.com/solosky/miniclock/raw/master/img/preview.gif)
+
 
 # 特色
 
@@ -66,8 +66,6 @@ MCU基于Arduino方案，ATmega328p + CH340。这方案很经典，可以一直�
 
 # 说明书
 
-### 预览
-(http://github.com/solosky/miniclock/raw/master/img/preview.gif)
 
 ### 普通显示模式
 
@@ -134,7 +132,7 @@ extended_fuses=0x05
 
 ### 相关软件下载
 
-    相关软件请在这里下载。
+http://pan.baidu.com/s/1dELJjPn
 
 ### 如果上面条件都满足了，并且你有足够的C语言基础，那么大胆的去改固件吧。
 
