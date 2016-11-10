@@ -8,12 +8,13 @@
 typedef struct _alarm_data_{
     uint8_t hour;
     uint8_t minute;
-    uint8_t repeat; // one bit represent a day
+    uint8_t repeat; // obit represent a day
 } alarm_data_t;
 
 //setting info, store in eeprom
 typedef struct _setting_data_ {
         uint8_t font_type;
+        int8_t lux_adj;
         alarm_data_t alarms[SETTING_MAX_ALARM_SIZE];  //TODO need implements
 } setting_data_t;
 

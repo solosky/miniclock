@@ -4,12 +4,12 @@
 setting_data_t _setting_data EEMEM;
 
 result_t setting_read(setting_data_t* data){
-        return _setting_read_buff(&_setting_data, (byte_t*) data, sizeof(setting_data_t));
+        return _setting_read_buff((uint8_t*)&_setting_data, (byte_t*) data, sizeof(setting_data_t));
 }
 
 
 result_t setting_write(setting_data_t* data){
-        return _setting_write_buff(&_setting_data,  (byte_t*) data, sizeof(setting_data_t));
+        return _setting_write_buff((uint8_t*)&_setting_data,  (byte_t*) data, sizeof(setting_data_t));
 }
 
 

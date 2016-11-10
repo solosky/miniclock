@@ -16,6 +16,7 @@ const view_page_t _view_pages[] PROGMEM = {
         {PG_DATE_SET, VIEW_TICK_OF_TIME(450), _view_render_date_set},
         {PG_YEAR_SET, VIEW_TICK_OF_TIME(450), _view_render_year_set},
         {PG_FONT_SET, VIEW_TICK_OF_TIME(450), _view_render_font_set},
+        {PG_LUX_SET, VIEW_TICK_OF_TIME(450), _view_render_lux_set},
         {0,0,0}
 };
 
@@ -178,6 +179,12 @@ void _view_render_year_set(view_t* view){
 void _view_render_font_set(view_t* view){
         char buff[6];
         sprintf(buff, "%s", "12:34");
+        _view_draw_string(view, buff);
+}
+
+void _view_render_lux_set(view_t* view){
+        char buff[6];
+        sprintf(buff, "%.02d", view->view_data.setting_data.lux_adj);
         _view_draw_string(view, buff);
 }
 

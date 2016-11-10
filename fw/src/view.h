@@ -26,7 +26,8 @@ enum _page_id {
         PG_TIME_SET,  //time set page
         PG_DATE_SET,  //date set page
         PG_YEAR_SET,  //year set page
-        PG_FONT_SET
+        PG_FONT_SET,  //font set page
+        PG_LUX_SET,  //lux adjust set page
 };
 
 // view mode
@@ -41,7 +42,8 @@ enum _set_field {
         SF_MONTH,
         SF_DAY,
         SF_YEAR,
-        SF_FONT
+        SF_FONT,
+        SF_LUX
 };
 
 //
@@ -125,6 +127,7 @@ void _view_render_time_set(view_t* view);
 void _view_render_date_set(view_t* view);
 void _view_render_year_set(view_t* view);
 void _view_render_font_set(view_t* view);
+void _view_render_lux_set(view_t* view);
 
 void _view_draw_string(view_t* view, char* str);
 

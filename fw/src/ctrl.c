@@ -119,7 +119,7 @@ void _ctrl_callback_on_key(uint8_t key, uint8_t event){
                         //enter setting mode
                         if(view_data->ctrl_mode == CM_SETTING) {
                                 //next set field
-                                if(view_data->set_field == SF_FONT) {
+                                if(view_data->set_field == SF_LUX) {
                                         //exit set mode
                                         _ctrl_switch_mode(ctrl, CM_NORMAL);
                                 }else{
@@ -131,6 +131,8 @@ void _ctrl_callback_on_key(uint8_t key, uint8_t event){
                                                 view_show_page(view, PG_YEAR_SET);
                                         }else if(view_data->set_field == SF_FONT) {
                                                 view_show_page(view, PG_FONT_SET);
+                                        }else if(view_data->set_field == SF_LUX){
+                                                view_show_page(view, PG_LUX_SET);
                                         }
                                 }
                         }
@@ -157,8 +159,10 @@ void _ctrl_callback_on_key(uint8_t key, uint8_t event){
 }
 
 void _ctrl_callback_on_lux(uint16_t lux){
-        //printf("lux: %d\n",lux);
+        printf("lux: %d\n",lux);
         fb_t* fb = fb_default();
+        setting_data_t* st = &(view_default()->view_data.setting_data);
+        lux -= st->lux_adj * 50;
         if(lux < 100) {
                 fb_set_brightness(fb, 7);
         }else if(lux < 150) {
@@ -192,6 +196,7 @@ void _ctrl_adjust_field_value(ctrl_t* ctrl, int8_t delta){
         case SF_MONTH: ADD_DELTA(dt, month, 1, 12, delta); break;
         case SF_YEAR: ADD_DELTA(dt, year, 0, 99, delta); break;
         case SF_FONT: sd->font_type = !sd->font_type; break;
+        case SF_LUX: ADD_DELTA(sd, lux_adj, -10, 10, delta); break;
         }
 }
 
@@ -213,6 +218,8 @@ void _ctrl_apply_setting_value(ctrl_t* ctrl){
                 }
                 break;
         case SF_FONT:
+        case SF_LUX:
+
                 setting_write(sd);
                 break;
         }
